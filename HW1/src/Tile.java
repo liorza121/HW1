@@ -24,4 +24,7 @@ public class Tile {
     public int hashCode() {
         return Integer.hashCode(value);
     }
+    public int getValue(){
+        return value;
+    }
 }

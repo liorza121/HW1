@@ -13,5 +13,10 @@ public class Action {
     public String toString(){
         return "Move " + tile + " " + dir.toString().toLowerCase(Locale.ROOT);
     }
-
+    public Tile getTile(){
+        return tile;
+    }
+    public Direction getDir() {
+        return dir;
+    }
 }
