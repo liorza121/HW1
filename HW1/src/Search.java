@@ -21,6 +21,9 @@ public class Search {
     private Node getRoot(String boardString) {
         // TODO: Implement this function.
         // NOTE: This is the only function you need to modify in this class!
+        Board initialBoard = new Board(boardString);
+        Node head = new Node(null, null,new State(initialBoard));
+        return head;
     }
 
     /**

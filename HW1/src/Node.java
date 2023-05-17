@@ -1,3 +1,5 @@
+import javafx.util.Pair;
+
 public class Node {
     private Node _parent;
     private Action _originatingAction;
@@ -28,5 +30,15 @@ public class Node {
      */
     public int heuristicValue(){
         return _state.getCorrectTiles();
+    }
+
+    public State getState() {
+        return _state;
+    }
+    public Action getAction(){
+        return _originatingAction;
+    }
+    public Node getParent(){
+        return _parent;
     }
 }
