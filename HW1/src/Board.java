@@ -106,7 +106,7 @@ public class Board {
                         return row;
                 }
                 else{
-                    if (tiles[row][col].equals(tile))
+                    if (tiles[row][col] != null && tiles[row][col].equals(tile))
                         return row;
                 }
             }
@@ -121,7 +121,7 @@ public class Board {
                         return col;
                 }
                 else{
-                    if (tiles[row][col].equals(tile))
+                    if (tiles[row][col] != null && tiles[row][col].equals(tile))
                         return col;
                 }
             }
