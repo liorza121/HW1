@@ -6,33 +6,69 @@ public class Board {
     private Tile tiles[][];
     private final int length;
     private final int width;
-
-
+    private int min (int a, int b){
+        if (a < b)
+            return a;
+        return b;
+    }
+    private int nextDelimiter(String str){
+        int indexOfSpace = str.indexOf(" ");
+        int indexOfEndl = str.indexOf("|");
+        if (indexOfSpace < 0)
+            return indexOfEndl;
+        if (indexOfEndl < 0)
+            return  indexOfSpace;
+        return min(indexOfSpace, indexOfEndl);
+    }
+    private int[][] createMatfromStr(String str){
+        int mat[][] = new int[length][width];
+        int counter = 0;
+        while(!str.equals("")){
+            int num;
+            int nextDelim = nextDelimiter(str);
+            String symbol = "";
+            if(nextDelim != -1)
+                symbol = str.substring(0,nextDelim);
+            else
+                symbol = str.substring(0);
+            if (!symbol.equals("_"))
+                num = Integer.parseInt(symbol);
+            else
+                num = 0; //0 to be defined as '_'
+            mat[counter / width][counter % width] = num;
+            if (nextDelim == -1)
+                str = "";
+            else
+                str = str.substring(nextDelimiter(str)+1);
+            counter++;
+        }
+        return mat;
+    }
     public Board(String tileList){
         this.length = getLength(tileList);
         this.width = getWidth(tileList);
         tiles = new Tile[length][width];
-        String value;
+        int values[][] = createMatfromStr(tileList);
         for(int i = 0; i < length; i++){
             for(int j = 0; j < width; j++) {
-                value = tileList.substring((i * (width * 2 + 1) + j * 2),(i * (width * 2 + 1) + j * 2) + 1);
-                if (value.equals("_")) {
+                if (values[i][j] == 0) {
                     tiles[i][j] = null;
                 } else {
-                    tiles[i][j] = new Tile(Integer.parseInt(value));
+                    tiles[i][j] = new Tile(values[i][j]);
                 }
             }
         }
     }
     public Board(Tile tilesParam[][]){
-        size = tilesParam.length * tilesParam[0].length;
+        length = tilesParam.length;
+        width = tilesParam[0].length;
         tiles = tilesParam;
     }
     @Override
     public String toString(){
         String ret = "";
         for(int i = 0; i < length; i++){
-            for(int j = 0; j < length; j++){
+            for(int j = 0; j < width; j++){
                 if(tiles[i][j] == null)
                     ret += "_|";
                 else
@@ -58,38 +94,46 @@ public class Board {
     }
 
     private int getLength(String tileList){
-        int count = 0;
+        int count = 1;
         for(int i = 0; i < tileList.length(); i++){
             if (tileList.charAt(i) == '|'){
                 count++;
             }
         }
-        return count + 1;
+        return count;
     }
-    private int getWidth(String tileList){
-        int count = 0;
-        for(int i = 0; (i < tileList.length()) && (tileList.charAt(i) != '|'); i++){
-            count++;
+    private int getWidth(String tileList) {
+        int count = 1;
+        for(int i = 0; i < tileList.length() && tileList.charAt(i) != '|'; i++) {
+            if(tileList.charAt(i) == ' ')
+                count++;
         }
-        return (count+1)/2;
+        return count;
+    }
+    private int getExpectedValue(int i, int j){
+        return i * width + j + 1;
+    }
     public int getCorrectTiles(){
         int count = 0;
-        for(int i = 0; i < tiles.length; i++){
-            for(int j = 0; j < tiles[0].length; j++){
-                int expectedValue = i * tiles.length + j;
-                if(tiles[i][j].getValue() == expectedValue)
+        for(int i = 0; i < length; i++){
+            for(int j = 0; j < width; j++){
+                int expectedValue = getExpectedValue(i, j);
+                if(tiles[i][j] == null){
+                    if(expectedValue == length * width)
+                        count++;
+                }
+                else if(tiles[i][j].getValue() == expectedValue)
                     count++;
             }
         }
         return count;
     }
     public boolean tileInPlace(int row, int col){
-        int expectedValue = row * tiles[0].length + col;
-        if (!(row == tiles.length && col == tiles[0].length)) {
+        int expectedValue = row * tiles[0].length + col + 1;
+        if (!(row == tiles.length - 1  && col == tiles[0].length - 1)) {
             if (tiles[row][col] == null) {
                 return false;
-            }
-            else{
+            } else {
                 return tiles[row][col].getValue() == expectedValue;
             }
         }
@@ -185,10 +229,34 @@ public class Board {
         tilesTemp[tileRow][tileCol] = null;
         return new Board(tilesTemp);
     }
-    public int getRowCount(){
-        return tiles.length;
+
+    public int getLength() {
+        return length;
     }
-    public int getColCount(){
-        return tiles[0].length;
+
+    public int getWidth(){
+        return width;
+    }
+
+    /**
+     *
+     * @param row - tile's row
+     * @param col - tile's col
+     * @return - distance of given tile from destination (see implementation for calculation)
+     */
+    private int getExpectedRow(int value){
+        return (value - 1) / width;
+    }
+    private int getExpectedCol(int value){
+        return (value -1) % width;
+    }
+    public int getDistance(int row, int col){
+        int value = 0;
+        if (tiles[row][col] != null)
+            value  = tiles[row][col].getValue();
+        if (tiles[row][col] == null)
+            return ((length - 1) - row) + ((width - 1) - col);
+        else
+            return (getExpectedRow(value)  - row) + (getExpectedCol(value) - col);
     }
 }

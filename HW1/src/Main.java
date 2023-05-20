@@ -2,7 +2,6 @@ import java.util.SortedMap;
 
 public class Main {
     public static void main(String[] args) {
-        /*
         String[] boards = {"_ 1",
                 "1 _",
                 "_ 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40",
@@ -25,11 +24,6 @@ public class Main {
             }
         }
         System.out.println("Able to solve " + successCounter + " ot of " + boards.length + " boards.");
-        */
-        Board initialBoard = new Board("7 5 4|_ 3 2|8 1 6");
-        Node head = new Node(null, null,new State(initialBoard));
-        Node expansion[] = head.expand();
-        System.out.println("bye ahi");
     }
 
     /**

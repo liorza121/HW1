@@ -29,7 +29,7 @@ public class Node {
      * currently, the basic value of how many tiles are in their place.
      */
     public int heuristicValue(){
-        return _state.getCorrectTiles();
+        return _state.SSE();
     }
 
     public State getState() {

@@ -21,8 +21,8 @@ public class State {
      * @return boolean value, goal or not
      */
     public boolean isGoal(){
-        for(int i = 0; i < _board.getRowCount(); i++){
-            for(int j = 0; j < _board.getColCount(); j++){
+        for(int i = 0; i < _board.getLength(); i++){
+            for(int j = 0; j < _board.getWidth(); j++){
                 if(!_board.tileInPlace(i,j))
                     return false;
             }
@@ -67,8 +67,27 @@ public class State {
     public State result(Action action){
         return new State(_board.result(action));
     }
+
+    public int getSize(){
+        return (_board.getWidth() * _board.getLength());
+    }
     @Override
     public int hashCode() {
         return _board.hashCode();
+    }
+
+    /**
+     *
+     * @return - returns the Sum of Squared Errors, where an error is the distance of each tile from it's target location.
+     */
+    public int SSE() {
+        int sum = 0;
+        for (int row = 0; row < _board.getLength(); row++) {
+            for (int col = 0; col < _board.getWidth(); col++) {
+                int dist = _board.getDistance(row, col);
+                sum += dist;
+            }
+        }
+        return sum;
     }
 }
