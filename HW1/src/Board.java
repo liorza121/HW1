@@ -232,10 +232,18 @@ public class Board {
         return new Board(tilesTemp);
     }
 
+    /**
+     *
+     * @return - the length of the board
+     */
     public int getLength() {
         return length;
     }
 
+    /**
+     *
+     * @return - the width of the board
+     */
     public int getWidth(){
         return width;
     }
@@ -258,19 +266,39 @@ public class Board {
             return absolute(tile.getWanted_row() - row) + absolute(tile.getWanted_col() - col);
     }
 
+    /**
+     *
+     * @param number - the number
+     * @return - the absolute value
+     */
     private int absolute(int number){
         if (number >= 0)
             return number;
         return -number;
     }
 
+    /**
+     *
+     * @param value the value of the tile
+     * @return - the expected row for it
+     */
     private int getExpectedRow(int value){
         return (value - 1) / width;
     }
+
+    /**
+     *
+     * @param value - the value of the tile
+     * @return - the desired column of the tile
+     */
     private int getExpectedCol(int value){
         return (value -1) % width;
     }
 
+    /**
+     *
+     * @return - the amount of tiles appearing next to each other that are supposed to appear so.
+     */
     public int getRelated(){
         int count = 1;
         for(int i=0; i < length - 1; i++){
