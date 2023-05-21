@@ -29,15 +29,29 @@ public class Node {
      * currently, the basic value of how many tiles are in their place.
      */
     public int heuristicValue(){
-        return _state.SSE();
+        return _state.calcError();
     }
 
+    /**
+     *
+     * @return - the state of the node
+     */
     public State getState() {
         return _state;
     }
+
+    /**
+     *
+     * @return - returns the action leading to the node
+     */
     public Action getAction(){
         return _originatingAction;
     }
+
+    /**
+     *
+     * @return - the parent node leading to the node
+     */
     public Node getParent(){
         return _parent;
     }

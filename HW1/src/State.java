@@ -3,6 +3,12 @@ public class State {
     public State(Board board){
         _board = board;
     }
+
+    /**
+     *
+     * @param other - state to be compared
+     * @return - wether the states are equal
+     */
     @Override
     public boolean equals(Object other) {
         if (!(other instanceof State)) {
@@ -11,6 +17,11 @@ public class State {
         State otherState = (State) other;
         return _board.equals(otherState._board);
     }
+
+    /**
+     *
+     * @return - returns the amount of correct tiles in the board
+     */
     public int getCorrectTiles(){
         return _board.getCorrectTiles();
     }
@@ -67,7 +78,7 @@ public class State {
     public State result(Action action){
         return new State(_board.result(action));
     }
-
+    //returns the size of the board
     public int getSize(){
         return (_board.getWidth() * _board.getLength());
     }
@@ -78,9 +89,10 @@ public class State {
 
     /**
      *
-     * @return - returns the Sum of Squared Errors, where an error is the distance of each tile from it's target location.
+     * @return - returns the error calculated by (manhattanDistance * (size - correctTiles)) * size,
+     * times 1.8(it boosted performance)
      */
-    public int SSE() {
+    public int calcError() {
         int sum = 0;
         int length = _board.getLength();
         int width = _board.getWidth();
@@ -92,7 +104,16 @@ public class State {
                 sum += dist;
             }
         }
-        float sse = sum*(float)(length*width-right)/(float)(length*width);
-        return (int)(sse*3);
+        float error = sum*(float)(length*width-right)/(float)(length*width);
+        return (int)(1.8 * error);
+    }
+
+    /**
+     *
+     * @return - returns the board's toString
+     */
+    @Override
+    public String toString() {
+        return _board.toString();
     }
 }

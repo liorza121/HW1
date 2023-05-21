@@ -12,11 +12,20 @@ public class Tile {
 
     }
 
+    /**
+     *
+     * @return - returns the value of the tile as a string
+     */
     @Override
     public String toString(){
         return String.valueOf(this.value);
     }
 
+    /**
+     *
+     * @param other - the other tile to be checked
+     * @return - returns wether or not the tiles are equal
+     */
     @Override
     public boolean equals(Object other) {
         if (!(other instanceof Tile)) {
@@ -26,18 +35,35 @@ public class Tile {
         return value == tile.value;
     }
 
+    /**
+     *
+     * @return - changes the hashcode to the value of the tile
+     */
     @Override
     public int hashCode() {
         return Integer.hashCode(value);
     }
+
+    /**
+     *
+     * @return - returns the value of the tile
+     */
     public int getValue(){
         return value;
     }
 
+    /**
+     *
+     * @return - returns the desired column of the tile
+     */
     public int getWanted_col() {
         return wanted_col;
     }
 
+    /**
+     *
+     * @return - returns the desired row of the tile
+     */
     public int getWanted_row() {
         return wanted_row;
     }
