@@ -45,6 +45,7 @@ public class Board {
         return mat;
     }
     public Board(String tileList){
+        int value;
         this.length = getLength(tileList);
         this.width = getWidth(tileList);
         tiles = new Tile[length][width];
@@ -54,7 +55,8 @@ public class Board {
                 if (values[i][j] == 0) {
                     tiles[i][j] = null;
                 } else {
-                    tiles[i][j] = new Tile(values[i][j]);
+                    value = values[i][j];
+                    tiles[i][j] = new Tile(value, getExpectedRow(value), getExpectedCol(value));
                 }
             }
         }
@@ -244,19 +246,46 @@ public class Board {
      * @param col - tile's col
      * @return - distance of given tile from destination (see implementation for calculation)
      */
+
+    public int getDistance(int row, int col){
+        int value = 0;
+        Tile tile = tiles[row][col];
+        if (tile != null)
+            value  = tile.getValue();
+        if (tile == null)
+            return ((length - 1) - row) + ((width - 1) - col);
+        else
+            return absolute(tile.getWanted_row() - row) + absolute(tile.getWanted_col() - col);
+    }
+
+    private int absolute(int number){
+        if (number >= 0)
+            return number;
+        return -number;
+    }
+
     private int getExpectedRow(int value){
         return (value - 1) / width;
     }
     private int getExpectedCol(int value){
         return (value -1) % width;
     }
-    public int getDistance(int row, int col){
-        int value = 0;
-        if (tiles[row][col] != null)
-            value  = tiles[row][col].getValue();
-        if (tiles[row][col] == null)
-            return ((length - 1) - row) + ((width - 1) - col);
-        else
-            return (getExpectedRow(value)  - row) + (getExpectedCol(value) - col);
+
+    public int getRelated(){
+        int count = 1;
+        for(int i=0; i < length - 1; i++){
+            for(int j=0; j < width - 1; j++){
+                Tile t1 = tiles[i][j];
+                Tile t2 = tiles[i + 1][j];
+                Tile t3 = tiles[i][j + 1];
+                if (t1 != null) {
+                    if (t2 != null && absolute(t1.getValue() - t2.getValue()) == 1)
+                        count++;
+                    if (t3 != null && absolute(t1.getValue() - t3.getValue()) == 1)
+                        count++;
+                }
+            }
+        }
+        return count;
     }
 }

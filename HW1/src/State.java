@@ -82,12 +82,17 @@ public class State {
      */
     public int SSE() {
         int sum = 0;
-        for (int row = 0; row < _board.getLength(); row++) {
-            for (int col = 0; col < _board.getWidth(); col++) {
-                int dist = _board.getDistance(row, col);
+        int length = _board.getLength();
+        int width = _board.getWidth();
+        int dist;
+        int right = this._board.getCorrectTiles();
+        for (int row = 0; row < length; row++) {
+            for (int col = 0; col < width; col++) {
+                dist = _board.getDistance(row, col);
                 sum += dist;
             }
         }
-        return sum;
+        float sse = sum*(float)(length*width-right)/(float)(length*width);
+        return (int)(sse*3);
     }
 }
